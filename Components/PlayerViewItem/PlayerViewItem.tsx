@@ -37,6 +37,7 @@ const PlayerViewItem = (props: PlayerViewItemProps) => {
         name: updatedName,
       },
     };
+    gameDispatch(dispatchAction);
   };
 
   return (

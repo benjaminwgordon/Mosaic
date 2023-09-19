@@ -1,11 +1,24 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, FlatList } from "react-native";
+import { useGame } from "../contexts/GameContext";
+import PlayerScoreList from "../Components/Scores/PlayerScoreList";
 
 const ScoreOverview = () => {
+  const game = useGame();
+
+  // denormalize state
+  const playerIds = game.entities.players.allIds;
+
   return (
-    <View>
-      <Text>Scores</Text>
-    </View>
+    <FlatList
+      contentContainerStyle={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+      }}
+      data={playerIds}
+      renderItem={({ item }) => <PlayerScoreList playerId={item} />}
+    />
   );
 };
 

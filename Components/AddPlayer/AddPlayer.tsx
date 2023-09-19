@@ -8,7 +8,7 @@ import { useGameDispatch } from "../../contexts/GameContext";
 const AddPlayer = () => {
   const gameDispatch = useGameDispatch();
 
-  const dispatchNewUser = () => {
+  const dispatchNewPlayer = () => {
     const newPlayerId = uuid.v4() as UUID;
     const newUserAction: PlayerAction = {
       type: "APPEND",
@@ -32,7 +32,7 @@ const AddPlayer = () => {
         alignContent: "center",
       }}
     >
-      <Button onPress={dispatchNewUser} title={"Add a player"} />
+      <Button onPress={dispatchNewPlayer} title={"Add a player"} />
     </View>
   );
 };
