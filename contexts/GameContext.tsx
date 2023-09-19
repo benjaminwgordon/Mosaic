@@ -4,7 +4,7 @@ import { EndgameScores } from "../types/EndgameScores";
 import { PlayerEmpireScores } from "../types/PlayerEmpireScores";
 import { PlayerEndgameScores } from "../types/PlayerEndgameScores";
 import { createContext, useContext, useReducer } from "react";
-import { GameReducer } from "../reducers/GameReducer";
+import { GameAction, GameReducer } from "../reducers/GameReducer";
 
 /**
  * Game represents a global state for the full game of Mosaic
@@ -31,7 +31,7 @@ const initializedGameState = {
     },
     endgameScores: {
       byId: {},
-      allId: [],
+      allIds: [],
     },
     playerEmpireScores: {
       byId: {},
@@ -45,7 +45,15 @@ const initializedGameState = {
 };
 
 const GameContext = createContext<Game>(null);
-const GameDispatchContext = createContext(null);
+const GameDispatchContext = createContext<React.Dispatch<GameAction>>(null);
+
+export function useGame() {
+  return useContext(GameContext);
+}
+
+export function useGameDispatch() {
+  return useContext(GameDispatchContext);
+}
 
 export const GameProvider = ({ children }) => {
   const [game, gameDispatch] = useReducer(GameReducer, initializedGameState);

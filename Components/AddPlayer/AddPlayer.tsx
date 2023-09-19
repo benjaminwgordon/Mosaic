@@ -1,17 +1,18 @@
-import React, { useContext, useState } from "react";
-import { PlayerDispatchContext } from "../../contexts/GameContext";
-import { Button, TextInput, View } from "react-native";
+import React from "react";
+import { Button, View } from "react-native";
 import uuid from "react-native-uuid";
 import { PlayerAction } from "../../reducers/PlayerReducer";
 import { UUID } from "../../types/id";
+import { useGameDispatch } from "../../contexts/GameContext";
 
 const AddPlayer = () => {
-  const playerDispatch = useContext(PlayerDispatchContext);
+  const gameDispatch = useGameDispatch();
 
   const dispatchNewUser = () => {
     const newPlayerId = uuid.v4() as UUID;
     const newUserAction: PlayerAction = {
       type: "APPEND",
+      entity: "PLAYER",
       payload: {
         newPlayer: {
           id: newPlayerId,
@@ -19,7 +20,7 @@ const AddPlayer = () => {
         },
       },
     };
-    playerDispatch(newUserAction);
+    gameDispatch(newUserAction);
   };
 
   return (

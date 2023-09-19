@@ -1,17 +1,18 @@
 import React, { useContext } from "react";
-import { PlayerContext } from "../../contexts/GameContext";
 import { FlatList, View } from "react-native";
 import AddPlayer from "../AddPlayer/AddPlayer";
 import PlayerViewItem from "../PlayerViewItem/PlayerViewItem";
+import { useGame, useGameDispatch } from "../../contexts/GameContext";
 
 const PlayerView = () => {
-  const players = useContext(PlayerContext);
+  const game = useGame();
+  const gameDispatch = useGameDispatch();
 
   return (
     <View>
       <FlatList
         style={{ flexGrow: 0 }}
-        data={players.allIds}
+        data={game.entities.players.allIds}
         renderItem={({ item }) => <PlayerViewItem playerId={item} />}
       />
       <AddPlayer />

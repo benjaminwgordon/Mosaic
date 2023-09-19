@@ -6,10 +6,10 @@ import { UUID } from "./id";
 
 export type EndgameScores = {
   byId: { [id: UUID]: EndgameScoring };
-  allId: UUID[];
+  allIds: UUID[];
 };
 
-type EndgameScoring = {
+export type EndgameScoring = {
   wonders: number;
   cities: number;
   towns: number;

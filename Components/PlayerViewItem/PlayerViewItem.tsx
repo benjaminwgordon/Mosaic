@@ -1,15 +1,10 @@
 import React, { useContext } from "react";
 import { View, Text, TextInput, Button } from "react-native";
+import { useGame, useGameDispatch } from "../../contexts/GameContext";
 import {
-  PlayerContext,
-  PlayerDispatchContext,
-} from "../../contexts/GameContext";
-import {
-  PlayerAction,
   PlayerDeleteAction,
   PlayerEditAction,
 } from "../../reducers/PlayerReducer";
-import { Player } from "../../types/Players";
 import PlayerViewStyle from "./PlayerViewItemStyle";
 import { UUID } from "../../types/id";
 
@@ -19,22 +14,24 @@ type PlayerViewItemProps = {
 
 const PlayerViewItem = (props: PlayerViewItemProps) => {
   const { playerId } = props;
-  const players = useContext(PlayerContext);
-  const playerDispatch = useContext(PlayerDispatchContext);
+  const game = useGame();
+  const gameDispatch = useGameDispatch();
 
   const submitPlayerDelete = () => {
     const dispatchAction: PlayerDeleteAction = {
       type: "DELETE",
+      entity: "PLAYER",
       payload: {
         id: playerId,
       },
     };
-    playerDispatch(dispatchAction);
+    gameDispatch(dispatchAction);
   };
 
   const submitPlayerEdit = (updatedName: string) => {
     const dispatchAction: PlayerEditAction = {
       type: "EDIT",
+      entity: "PLAYER",
       payload: {
         id: playerId,
         name: updatedName,
@@ -51,7 +48,7 @@ const PlayerViewItem = (props: PlayerViewItemProps) => {
           submitPlayerEdit(text);
         }}
       >
-        {players.byId[playerId].name}
+        {game.entities.players.byId[playerId].name}
       </TextInput>
       <Button title={"Delete"} onPress={submitPlayerDelete} />
     </View>

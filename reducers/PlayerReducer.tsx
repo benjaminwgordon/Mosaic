@@ -1,6 +1,9 @@
 import { produce } from "immer";
 import { UUID } from "../types/id";
 import { Game } from "../contexts/GameContext";
+import uuid from "react-native-uuid";
+import { EmpireScoring } from "../types/EmpireScore";
+import { EndgameScoring } from "../types/EndgameScores";
 
 export type PlayerAction =
   | PlayerAppendAction
@@ -53,13 +56,93 @@ const handlePlayerAppend = (state: Game, action: PlayerAppendAction): Game => {
     return state;
   }
 
+  /**
+   * Creates a new player entity, and also their associated scorecards (endgame and empire)
+   */
   return produce(state, (draft) => {
+    // generate player entity
     draft.entities.players.allIds.push(action.payload.newPlayer.id);
     draft.entities.players.byId[action.payload.newPlayer.id] =
       action.payload.newPlayer;
+
+    const initializedEmpireScorecard: EmpireScoring = [
+      {
+        hispania: 0,
+        gaul: 0,
+        italia: 0,
+        greece: 0,
+        assyria: 0,
+        egpyt: 0,
+        numidia: 0,
+        government: 0,
+      },
+      {
+        hispania: 0,
+        gaul: 0,
+        italia: 0,
+        greece: 0,
+        assyria: 0,
+        egpyt: 0,
+        numidia: 0,
+        government: 0,
+      },
+      {
+        hispania: 0,
+        gaul: 0,
+        italia: 0,
+        greece: 0,
+        assyria: 0,
+        egpyt: 0,
+        numidia: 0,
+        government: 0,
+      },
+    ];
+
+    const initializedEndgameScoreCard: EndgameScoring = {
+      wonders: 0,
+      cities: 0,
+      towns: 0,
+      manufactoryTowns: 0,
+      goldenAges: 0,
+      achievements: 0,
+      projects: 0,
+      technologies: 0,
+      unrest: 0,
+    };
+
+    // generate player's empire scorecard
+    const empireScoreID = uuid.v4() as UUID;
+    draft.entities.empireScores.allIds.push(empireScoreID);
+    draft.entities.empireScores.byId[empireScoreID] =
+      initializedEmpireScorecard;
+
+    // generate the relation between the player and their empire scorecard
+    const playerEmpireScoreID = uuid.v4() as UUID;
+    draft.entities.playerEmpireScores.allIds.push(playerEmpireScoreID);
+    draft.entities.playerEmpireScores.byId[playerEmpireScoreID] = {
+      id: playerEmpireScoreID,
+      playerId: action.payload.newPlayer.id,
+      empireScoreID: empireScoreID,
+    };
+
+    // generate the endgame scorecard
+    const endgameScoreID = uuid.v4() as UUID;
+    draft.entities.endgameScores.allIds.push(endgameScoreID);
+    draft.entities.endgameScores.byId[endgameScoreID] =
+      initializedEndgameScoreCard;
+
+    // generate the relation between the player and their endgame scorecard
+    const playerEndgameScoreID = uuid.v4() as UUID;
+    draft.entities.playerEndgameScores.allIds.push(playerEndgameScoreID);
+    draft.entities.playerEndgameScores.byId[playerEndgameScoreID] = {
+      id: playerEndgameScoreID,
+      playerId: action.payload.newPlayer.id,
+      endgameScoreId: endgameScoreID,
+    };
   });
 };
 
+// TODO: cascade deletes on relations
 const handlePlayerEdit = (state: Game, action: PlayerEditAction): Game => {
   const { id, name } = action.payload;
   console.log("name", { name });

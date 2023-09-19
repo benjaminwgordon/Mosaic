@@ -12,13 +12,13 @@ export type EmpireScores = {
   allIds: UUID[];
 };
 
-type EmpireScoring = [
+export type EmpireScoring = [
   EmpireRoundScoring,
   EmpireRoundScoring,
   EmpireRoundScoring
 ];
 
-type EmpireRoundScoring = {
+export type EmpireRoundScoring = {
   hispania: number;
   gaul: number;
   italia: number;
