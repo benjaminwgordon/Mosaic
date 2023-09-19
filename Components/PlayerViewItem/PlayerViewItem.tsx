@@ -3,7 +3,7 @@ import { View, Text, TextInput, Button } from "react-native";
 import {
   PlayerContext,
   PlayerDispatchContext,
-} from "../../contexts/PlayerContext";
+} from "../../contexts/GameContext";
 import {
   PlayerAction,
   PlayerDeleteAction,

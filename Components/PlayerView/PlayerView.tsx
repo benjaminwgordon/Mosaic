@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { PlayerContext } from "../../contexts/PlayerContext";
+import { PlayerContext } from "../../contexts/GameContext";
 import { FlatList, View } from "react-native";
 import AddPlayer from "../AddPlayer/AddPlayer";
 import PlayerViewItem from "../PlayerViewItem/PlayerViewItem";

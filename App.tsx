@@ -1,14 +1,14 @@
-import { PlayerProvider } from "./contexts/PlayerContext";
 import { NavigationContainer } from "@react-navigation/native";
 import PlayerMenu from "./Screens/PlayerMenu";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ScoreOverview from "./Screens/ScoreOverview";
+import { GameProvider } from "./contexts/GameContext";
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <PlayerProvider>
+    <GameProvider>
       <NavigationContainer>
         <Tab.Navigator>
           <Tab.Screen
@@ -23,6 +23,6 @@ export default function App() {
           />
         </Tab.Navigator>
       </NavigationContainer>
-    </PlayerProvider>
+    </GameProvider>
   );
 }

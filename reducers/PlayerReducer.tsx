@@ -1,18 +1,22 @@
 import { produce } from "immer";
-import { Players } from "../types/Players";
 import { UUID } from "../types/id";
+import { Game } from "../contexts/GameContext";
 
 export type PlayerAction =
   | PlayerAppendAction
   | PlayerDeleteAction
   | PlayerEditAction;
 
+export type PlayerActionEntity = {
+  entity: "PLAYER";
+};
+
 export type PlayerDeleteAction = {
   type: "DELETE";
   payload: {
     id: UUID;
   };
-};
+} & PlayerActionEntity;
 
 export type PlayerAppendAction = {
   type: "APPEND";
@@ -22,7 +26,7 @@ export type PlayerAppendAction = {
       name: string;
     };
   };
-};
+} & PlayerActionEntity;
 
 export type PlayerEditAction = {
   type: "EDIT";
@@ -30,12 +34,9 @@ export type PlayerEditAction = {
     id: UUID;
     name: string;
   };
-};
+} & PlayerActionEntity;
 
-export const playerReducer = (
-  state: Players,
-  action: PlayerAction
-): Players => {
+export const playerReducer = (state: Game, action: PlayerAction): Game => {
   switch (action.type) {
     case "APPEND":
       return handlePlayerAppend(state, action);
@@ -46,37 +47,33 @@ export const playerReducer = (
   }
 };
 
-// to prevent side-effects inside the reducer, a random UUID must be generated BEFORE dispatch
-const handlePlayerAppend = (state: Players, action: PlayerAppendAction) => {
+const handlePlayerAppend = (state: Game, action: PlayerAppendAction): Game => {
   // Mosaic has a maximum of 6 players, reject appends over 6 players
-  if (state.allIds.length >= 6) {
+  if (state.entities.players.allIds.length >= 6) {
     return state;
   }
 
   return produce(state, (draft) => {
-    draft.allIds.push(action.payload.newPlayer.id);
-    draft.byId[action.payload.newPlayer.id] = action.payload.newPlayer;
+    draft.entities.players.allIds.push(action.payload.newPlayer.id);
+    draft.entities.players.byId[action.payload.newPlayer.id] =
+      action.payload.newPlayer;
   });
 };
 
-const handlePlayerEdit = (
-  state: Players,
-  action: PlayerEditAction
-): Players => {
+const handlePlayerEdit = (state: Game, action: PlayerEditAction): Game => {
   const { id, name } = action.payload;
   console.log("name", { name });
   return produce(state, (draft) => {
-    draft.byId[id].name = name;
+    draft.entities.players.byId[id].name = name;
   });
 };
 
-const handlePlayerDelete = (
-  state: Players,
-  action: PlayerDeleteAction
-): Players => {
+const handlePlayerDelete = (state: Game, action: PlayerDeleteAction): Game => {
   const { id: targetPlayerId } = action.payload;
   return produce(state, (draft) => {
-    draft.allIds = draft.allIds.filter((id) => id !== targetPlayerId);
-    delete draft.byId[targetPlayerId];
+    draft.entities.players.allIds = draft.entities.players.allIds.filter(
+      (id) => id !== targetPlayerId
+    );
+    delete draft.entities.players.byId[targetPlayerId];
   });
 };

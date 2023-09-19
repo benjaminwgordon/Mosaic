@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { PlayerDispatchContext } from "../../contexts/PlayerContext";
+import { PlayerDispatchContext } from "../../contexts/GameContext";
 import { Button, TextInput, View } from "react-native";
 import uuid from "react-native-uuid";
 import { PlayerAction } from "../../reducers/PlayerReducer";
