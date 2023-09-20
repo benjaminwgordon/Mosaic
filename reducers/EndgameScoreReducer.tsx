@@ -92,26 +92,35 @@ const handleEndgameEdit = (state: Game, action: EndgameScoreEditAction) => {
     switch (scoreCategory) {
       case "wonders":
         draftState.entities.endgameScores.byId[scoreEntityID].wonders = score;
+        break;
       case "cities":
         draftState.entities.endgameScores.byId[scoreEntityID].cities = score;
+        break;
       case "towns":
         draftState.entities.endgameScores.byId[scoreEntityID].towns = score;
+        break;
       case "manufactoryTowns":
         draftState.entities.endgameScores.byId[scoreEntityID].manufactoryTowns =
           score;
+        break;
       case "goldenAges":
         draftState.entities.endgameScores.byId[scoreEntityID].goldenAges =
           score;
+        break;
       case "achievements":
         draftState.entities.endgameScores.byId[scoreEntityID].achievements =
           score;
+        break;
       case "projects":
         draftState.entities.endgameScores.byId[scoreEntityID].projects = score;
+        break;
       case "technologies":
         draftState.entities.endgameScores.byId[scoreEntityID].technologies =
           score;
+        break;
       case "unrest":
         draftState.entities.endgameScores.byId[scoreEntityID].unrest = score;
+        break;
     }
   });
 };
@@ -151,27 +160,36 @@ const handleEndgameAdd = (state: Game, action: EndgameScoreAddAction) => {
     switch (scoreCategory) {
       case "wonders":
         draftState.entities.endgameScores.byId[scoreEntityID].wonders += score;
+        break;
       case "cities":
         draftState.entities.endgameScores.byId[scoreEntityID].cities += score;
+        break;
       case "towns":
         draftState.entities.endgameScores.byId[scoreEntityID].towns += score;
+        break;
       case "manufactoryTowns":
         draftState.entities.endgameScores.byId[
           scoreEntityID
         ].manufactoryTowns += score;
+        break;
       case "goldenAges":
         draftState.entities.endgameScores.byId[scoreEntityID].goldenAges +=
           score;
+        break;
       case "achievements":
         draftState.entities.endgameScores.byId[scoreEntityID].achievements +=
           score;
+        break;
       case "projects":
         draftState.entities.endgameScores.byId[scoreEntityID].projects += score;
+        break;
       case "technologies":
         draftState.entities.endgameScores.byId[scoreEntityID].technologies +=
           score;
+        break;
       case "unrest":
         draftState.entities.endgameScores.byId[scoreEntityID].unrest += score;
+        break;
     }
   });
 };

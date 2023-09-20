@@ -8,20 +8,22 @@ export type EmpireScoreActionEntity = {
   entity: "EMPIRE";
 };
 
+export type EmpireScoreCategory =
+  | "hispania"
+  | "gaul"
+  | "italia"
+  | "greece"
+  | "assyria"
+  | "egpyt"
+  | "numidia"
+  | "government";
+
 export type EmpireScoreEditAction = {
   type: "EMPIRE-EDIT";
   payload: {
     playerId: UUID;
     round: 0 | 1 | 2;
-    scoreCategory:
-      | "hispania"
-      | "gaul"
-      | "italia"
-      | "greece"
-      | "assyria"
-      | "egpyt"
-      | "numidia"
-      | "government";
+    scoreCategory: EmpireScoreCategory;
     score: number;
   };
 } & EmpireScoreActionEntity;
@@ -69,7 +71,7 @@ const handleEmpireEdit = (state: Game, action: EmpireScoreEditAction) => {
     // fetch the player's related Empire Score entity
     const playerScoreEntity = Object.values(
       draftState.entities.playerEmpireScores.byId
-    ).find((playerEmpireScore) => playerEmpireScore.id == playerId);
+    ).find((playerEmpireScore) => playerEmpireScore.playerId == playerId);
 
     if (!playerScoreEntity) {
       throw Error(
@@ -93,27 +95,35 @@ const handleEmpireEdit = (state: Game, action: EmpireScoreEditAction) => {
       case "hispania":
         draftState.entities.empireScores.byId[scoreEntityID][round].hispania =
           score;
+        break;
       case "gaul":
         draftState.entities.empireScores.byId[scoreEntityID][round].gaul =
           score;
+        break;
       case "italia":
         draftState.entities.empireScores.byId[scoreEntityID][round].italia =
           score;
+        break;
       case "greece":
         draftState.entities.empireScores.byId[scoreEntityID][round].greece =
           score;
+        break;
       case "assyria":
         draftState.entities.empireScores.byId[scoreEntityID][round].assyria =
           score;
+        break;
       case "egpyt":
         draftState.entities.empireScores.byId[scoreEntityID][round].egpyt =
           score;
+        break;
       case "numidia":
         draftState.entities.empireScores.byId[scoreEntityID][round].numidia =
           score;
+        break;
       case "government":
         draftState.entities.empireScores.byId[scoreEntityID][round].government =
           score;
+        break;
     }
   });
 };
@@ -153,28 +163,36 @@ const handleEmpireAdd = (state: Game, action: EmpireScoreAddAction) => {
       case "hispania":
         draftState.entities.empireScores.byId[scoreEntityID][round].hispania +=
           score;
+        break;
       case "gaul":
         draftState.entities.empireScores.byId[scoreEntityID][round].gaul +=
           score;
+        break;
       case "italia":
         draftState.entities.empireScores.byId[scoreEntityID][round].italia +=
           score;
+        break;
       case "greece":
         draftState.entities.empireScores.byId[scoreEntityID][round].greece +=
           score;
+        break;
       case "assyria":
         draftState.entities.empireScores.byId[scoreEntityID][round].assyria +=
           score;
+        break;
       case "egpyt":
         draftState.entities.empireScores.byId[scoreEntityID][round].egpyt +=
           score;
+        break;
       case "numidia":
         draftState.entities.empireScores.byId[scoreEntityID][round].numidia +=
           score;
+        break;
       case "government":
         draftState.entities.empireScores.byId[scoreEntityID][
           round
         ].government += score;
+        break;
     }
   });
 };
