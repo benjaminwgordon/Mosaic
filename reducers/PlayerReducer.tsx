@@ -145,7 +145,6 @@ const handlePlayerAppend = (state: Game, action: PlayerAppendAction): Game => {
 // TODO: cascade deletes on relations
 const handlePlayerEdit = (state: Game, action: PlayerEditAction): Game => {
   const { id, name } = action.payload;
-  console.log("name", { name });
   return produce(state, (draft) => {
     draft.entities.players.byId[id].name = name;
   });

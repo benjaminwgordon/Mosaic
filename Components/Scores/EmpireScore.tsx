@@ -1,5 +1,5 @@
 import { EmpireRoundScoring, EmpireScoring } from "../../types/EmpireScore";
-import { DataTable } from "react-native-paper";
+import { DataTable, useTheme } from "react-native-paper";
 import { EmpireScoreCategory } from "../../reducers/EmpireScoreReducer";
 import { Player } from "../../types/Players";
 import ScoreCell from "./ScoreCell";
@@ -14,7 +14,6 @@ type EmpireScoreTableProps = {
 
 const EmpireScoreTable = (props: EmpireScoreTableProps) => {
   const { round, roundNumber } = props;
-
   const empireScoringCategories: EmpireScoreCategory[] = [
     "hispania",
     "gaul",
@@ -28,7 +27,12 @@ const EmpireScoreTable = (props: EmpireScoreTableProps) => {
 
   const tableHeader = () => {
     return (
-      <DataTable.Header style={{ margin: 0, padding: 0 }}>
+      <DataTable.Header
+        style={{
+          margin: 0,
+          padding: 0,
+        }}
+      >
         {/* padding */}
         <DataTable.Title
           key={0}
@@ -45,6 +49,7 @@ const EmpireScoreTable = (props: EmpireScoreTableProps) => {
             style={{
               justifyContent: "center",
             }}
+            textStyle={{}}
           >
             {category.substring(0, 4)}
           </DataTable.Title>
@@ -54,11 +59,17 @@ const EmpireScoreTable = (props: EmpireScoreTableProps) => {
   };
 
   return (
-    <DataTable>
+    <DataTable style={{}}>
       {tableHeader()}
       {round.map((playerEmpireRound, index) => {
         return (
-          <DataTable.Row key={index}>
+          <DataTable.Row
+            key={index}
+            style={{
+              paddingHorizontal: 0,
+              marginHorizontal: 16,
+            }}
+          >
             <DataTable.Cell style={{ minWidth: 20 }}>
               {playerEmpireRound.player.name}
             </DataTable.Cell>

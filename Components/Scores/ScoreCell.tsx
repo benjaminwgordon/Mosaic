@@ -1,4 +1,12 @@
-import { Button, Modal, Portal, Text, TextInput } from "react-native-paper";
+import {
+  Button,
+  Card,
+  Modal,
+  Portal,
+  Text,
+  TextInput,
+  useTheme,
+} from "react-native-paper";
 import { useGame, useGameDispatch } from "../../contexts/GameContext";
 import { UUID } from "../../types/id";
 import {
@@ -32,6 +40,7 @@ const ScoreCell = (props: ScoreCellProps) => {
   const toggleModalVisible = () => {
     setIsModalVisible(!isEditModalVisible);
   };
+  const { colors } = useTheme();
 
   const playerName = Object.values(game.entities.players.byId).find(
     (player) => player.id == playerId
@@ -47,11 +56,15 @@ const ScoreCell = (props: ScoreCellProps) => {
     // score input is string based, check for valid
     // parsable int and throw UI error if not parsable
 
-    const parsed = parseInt(score);
-    if (isNaN(parsed)) {
+    const strRegex = new RegExp(/^[0-9]+$/i);
+    const isScoreNumeric = strRegex.test(score);
+
+    if (!isScoreNumeric) {
       setFormErrors("Input a number");
       return;
     }
+
+    const parsed = parseInt(score);
 
     setIsModalVisible(false);
 
@@ -65,21 +78,25 @@ const ScoreCell = (props: ScoreCellProps) => {
         score: parsed,
       },
     };
-    console.log({ empireScoreEditDispatchAction });
     gameDispatch(empireScoreEditDispatchAction);
   };
 
   return (
-    <View style={{ justifyContent: "center" }}>
+    <View
+      style={{
+        justifyContent: "center",
+      }}
+    >
       <Text onPress={() => toggleModalVisible()} style={{ fontSize: 16 }}>
         {categoryScore.toString()}
       </Text>
       <Portal>
         <Modal visible={isEditModalVisible} onDismiss={toggleModalVisible}>
-          <View
+          <Card
             style={{
+              height: 280,
               borderRadius: 10,
-              backgroundColor: "white",
+              backgroundColor: colors.surfaceVariant,
               margin: 20,
               padding: 20,
               justifyContent: "center",
@@ -87,14 +104,15 @@ const ScoreCell = (props: ScoreCellProps) => {
               gap: 10,
             }}
           >
-            <View>
-              <Text>
-                Override {playerName}'s Round {roundNumber + 1}{" "}
-                {empireScoringCategories[cellIndex].charAt(0).toUpperCase() +
-                  empireScoringCategories[cellIndex].substring(1)}{" "}
-                score?
-              </Text>
-            </View>
+            <Text
+              variant="titleLarge"
+              style={{ textAlign: "center", marginBottom: 5 }}
+            >
+              Override {playerName}'s Round {roundNumber + 1}{" "}
+              {empireScoringCategories[cellIndex].charAt(0).toUpperCase() +
+                empireScoringCategories[cellIndex].substring(1)}{" "}
+              score?
+            </Text>
             <View
               style={{
                 display: "flex",
@@ -104,7 +122,7 @@ const ScoreCell = (props: ScoreCellProps) => {
                 gap: 10,
               }}
             >
-              <Text style={{ fontSize: 20 }}>{categoryScore}</Text>
+              <Text style={{ fontSize: 24 }}>{categoryScore}</Text>
               <Text>{"->"}</Text>
               <TextInput
                 keyboardType="numeric"
@@ -115,7 +133,15 @@ const ScoreCell = (props: ScoreCellProps) => {
                 style={{ fontSize: 20, textAlign: "center" }}
               />
             </View>
-            <Text style={{ color: "#ff3333" }}>{formErrors}</Text>
+            <Text
+              style={{
+                color: colors.error,
+                textAlign: "center",
+                marginVertical: 5,
+              }}
+            >
+              {formErrors}
+            </Text>
             <View
               style={{
                 margin: 10,
@@ -145,7 +171,7 @@ const ScoreCell = (props: ScoreCellProps) => {
                 Cancel
               </Button>
             </View>
-          </View>
+          </Card>
         </Modal>
       </Portal>
     </View>

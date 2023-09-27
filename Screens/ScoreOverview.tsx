@@ -1,19 +1,72 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Game, useGame } from "../contexts/GameContext";
-import { DataTable } from "react-native-paper";
-import { ScrollView, Text, View } from "react-native";
+import { Card, useTheme } from "react-native-paper";
+import { Animated, ScrollView, Text, View } from "react-native";
 import EmpireScoreTable from "../Components/Scores/EmpireScore";
+import RoundScorecard from "../Components/Scores/RoundScorecard";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 
-const ScoreOverview = () => {
+type RootTabParamList = {
+  rounds: undefined;
+  scores: undefined;
+  players: undefined;
+};
+
+type ScoreOverviewScreenProps = BottomTabScreenProps<
+  RootTabParamList,
+  "scores"
+>;
+
+const ScoreOverview = (props: ScoreOverviewScreenProps) => {
   const game = useGame();
+  const { navigation } = props;
+  const { colors } = useTheme();
   const roundOrientedGameState = getRoundBasedGameState(game);
 
+  const slideIn = useRef(new Animated.Value(0)).current;
+  const slideInSpring = () => {
+    Animated.spring(slideIn, {
+      toValue: 1,
+      useNativeDriver: true,
+    }).start();
+  };
+  useEffect(() => {
+    const unsub = navigation.addListener("focus", () => {
+      const prevRoute =
+        navigation.getState().routes[navigation.getState().routes.length - 1]
+          .name;
+      console.log(navigation.getState());
+      console.log({ prevRoute });
+      // if prev screen was rounds, slide in from left
+      if (prevRoute === "rounds") slideIn.setValue(-1);
+      // if prev screen was players, slide in from right
+      if (prevRoute === "players") slideIn.setValue(1);
+
+      slideInSpring();
+    });
+    return unsub;
+  }, [navigation]);
+
   return game.entities.players.allIds.length > 0 ? (
-    <ScrollView>
-      <EmpireScoreTable roundNumber={0} round={roundOrientedGameState.round1} />
-      <EmpireScoreTable roundNumber={1} round={roundOrientedGameState.round2} />
-      <EmpireScoreTable roundNumber={2} round={roundOrientedGameState.round3} />
-    </ScrollView>
+    <Animated.View>
+      <ScrollView style={{ backgroundColor: colors.background }}>
+        <RoundScorecard
+          round={roundOrientedGameState.round1}
+          roundName={"Empire Round 1"}
+          roundNumber={0}
+        />
+        <RoundScorecard
+          round={roundOrientedGameState.round2}
+          roundName={"Empire Round 2"}
+          roundNumber={1}
+        />
+        <RoundScorecard
+          round={roundOrientedGameState.round3}
+          roundName={"Empire Round 3"}
+          roundNumber={2}
+        />
+      </ScrollView>
+    </Animated.View>
   ) : (
     <Text>Enter some players to see scores</Text>
   );
