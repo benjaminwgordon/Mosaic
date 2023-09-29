@@ -13,6 +13,12 @@ import { StatusBar } from "expo-status-bar";
 
 const Tab = createMaterialBottomTabNavigator();
 
+export type RootTabParamList = {
+  rounds: undefined;
+  scores: undefined;
+  players: { prevRelNavIndex: number };
+};
+
 export default function App() {
   return (
     <GameProvider>

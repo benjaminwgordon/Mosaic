@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Game, useGame } from "../contexts/GameContext";
-import { Card, useTheme } from "react-native-paper";
-import { Animated, ScrollView, Text, View } from "react-native";
+import { Button, Card, useTheme } from "react-native-paper";
+import { Animated, Dimensions, ScrollView, Text, View } from "react-native";
 import EmpireScoreTable from "../Components/Scores/EmpireScore";
 import RoundScorecard from "../Components/Scores/RoundScorecard";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
@@ -30,45 +30,76 @@ const ScoreOverview = (props: ScoreOverviewScreenProps) => {
       useNativeDriver: true,
     }).start();
   };
+
   useEffect(() => {
     const unsub = navigation.addListener("focus", () => {
-      const prevRoute =
-        navigation.getState().routes[navigation.getState().routes.length - 1]
-          .name;
-      console.log(navigation.getState());
-      console.log({ prevRoute });
-      // if prev screen was rounds, slide in from left
-      if (prevRoute === "rounds") slideIn.setValue(-1);
-      // if prev screen was players, slide in from right
-      if (prevRoute === "players") slideIn.setValue(1);
-
+      // Slide in the View from either left or right, depending on prevNavState prop
       slideInSpring();
     });
     return unsub;
   }, [navigation]);
 
-  return game.entities.players.allIds.length > 0 ? (
-    <Animated.View>
-      <ScrollView style={{ backgroundColor: colors.background }}>
-        <RoundScorecard
-          round={roundOrientedGameState.round1}
-          roundName={"Empire Round 1"}
-          roundNumber={0}
-        />
-        <RoundScorecard
-          round={roundOrientedGameState.round2}
-          roundName={"Empire Round 2"}
-          roundNumber={1}
-        />
-        <RoundScorecard
-          round={roundOrientedGameState.round3}
-          roundName={"Empire Round 3"}
-          roundNumber={2}
-        />
-      </ScrollView>
+  const toPlayersScreenButton = () => {
+    return (
+      <Button
+        mode="contained"
+        icon={"account-plus-outline"}
+        onPress={() => {
+          navigation.navigate("players");
+        }}
+      >
+        {}
+      </Button>
+    );
+  };
+
+  return (
+    <Animated.View
+      style={{
+        height: "100%",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 20,
+        // transform: [
+        //   {
+        //     translateX: slideIn.interpolate({
+        //       inputRange: [-1, 1],
+        //       outputRange: [
+        //         -Dimensions.get("window").width,
+        //         Dimensions.get("window").width,
+        //       ],
+        //     }),
+        //   },
+        // ],
+      }}
+    >
+      {game.entities.players.allIds.length > 0 ? (
+        <ScrollView
+          style={{ backgroundColor: colors.background, width: "100%" }}
+        >
+          <RoundScorecard
+            round={roundOrientedGameState.round1}
+            roundName={"Empire Round 1"}
+            roundNumber={0}
+          />
+          <RoundScorecard
+            round={roundOrientedGameState.round2}
+            roundName={"Empire Round 2"}
+            roundNumber={1}
+          />
+          <RoundScorecard
+            round={roundOrientedGameState.round3}
+            roundName={"Empire Round 3"}
+            roundNumber={2}
+          />
+        </ScrollView>
+      ) : (
+        <View>
+          <Text>Add players to view and edit scores</Text>
+          {toPlayersScreenButton()}
+        </View>
+      )}
     </Animated.View>
-  ) : (
-    <Text>Enter some players to see scores</Text>
   );
 };
 

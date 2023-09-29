@@ -4,12 +4,8 @@ import { Game, useGame } from "../contexts/GameContext";
 import { EmpireRoundScoring } from "../types/EmpireScore";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { useEffect, useRef } from "react";
-
-type RootTabParamList = {
-  rounds: undefined;
-  scores: undefined;
-  players: undefined;
-};
+import { RootTabParamList } from "../App";
+import ScoreRoundSelector from "../Components/ScoreRoundSelector/ScoreRoundSelector";
 
 type RoundsScreenProps = BottomTabScreenProps<RootTabParamList, "rounds">;
 
@@ -44,7 +40,7 @@ const RoundsScreen = (props: RoundsScreenProps) => {
         mode="contained"
         icon={"account-plus-outline"}
         onPress={() => {
-          navigation.navigate("players");
+          navigation.navigate("players", { prevRelNavIndex: -1 });
         }}
       >
         {}
@@ -70,12 +66,7 @@ const RoundsScreen = (props: RoundsScreenProps) => {
       }}
     >
       {hasPlayers ? (
-        <>
-          <Button mode="contained">Score Round 1</Button>
-          <Button mode="contained">Score Round 2</Button>
-          <Button mode="contained">Score Round 3</Button>
-          <Button mode="contained">Score the Endgame</Button>
-        </>
+        <ScoreRoundSelector />
       ) : (
         <View>
           <Text>Add players to start scoring rounds</Text>
