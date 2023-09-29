@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import PlayerView from "../Components/PlayerView/PlayerView";
 import { Animated, Dimensions } from "react-native";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { StackScreenProps } from "@react-navigation/stack";
 
 type RootTabParamList = {
   rounds: undefined;
@@ -9,7 +10,7 @@ type RootTabParamList = {
   players: undefined;
 };
 
-type PlayerMenuScreenProps = BottomTabScreenProps<RootTabParamList, "players">;
+type PlayerMenuScreenProps = StackScreenProps<RootStackParamList, "players">;
 
 const PlayerMenuScreen = (props: PlayerMenuScreenProps) => {
   const slideIn = useRef(new Animated.Value(0)).current;

@@ -1,8 +1,40 @@
 import React from "react";
 import { View } from "react-native";
 import { Button, Text } from "react-native-paper";
+import { RootStackParamList } from "../ScoreRoundSelector/ScoreRoundSelector";
+import { StackScreenProps } from "@react-navigation/stack";
+import { EmpireRoundScoring } from "../../types/EmpireScore";
+import { EndgameScoring } from "../../types/EndgameScores";
 
-const ScoreRoundSelect = ({ navigation }) => {
+type PlayerMenuScreenProps = StackScreenProps<RootStackParamList>;
+
+type ScoreRoundSelectProps = PlayerMenuScreenProps;
+
+const initialEmpireScore: EmpireRoundScoring = {
+  hispania: 0,
+  gaul: 0,
+  italia: 0,
+  greece: 0,
+  assyria: 0,
+  egpyt: 0,
+  numidia: 0,
+  government: 0,
+};
+
+const initialEndgameScore: EndgameScoring = {
+  wonders: 0,
+  cities: 0,
+  towns: 0,
+  manufactoryTowns: 0,
+  goldenAges: 0,
+  achievements: 0,
+  projects: 0,
+  technologies: 0,
+  unrest: 0,
+};
+
+const ScoreRoundSelect = (props: ScoreRoundSelectProps) => {
+  const { navigation } = props;
   return (
     <View
       style={{
@@ -15,25 +47,44 @@ const ScoreRoundSelect = ({ navigation }) => {
     >
       <Button
         mode="contained"
-        onPress={() => navigation.navigate("EmpireScoreCategoryInput", {})}
+        onPress={() =>
+          navigation.navigate("EmpireScoreCategoryInput", {
+            draftEmpireScore: initialEmpireScore,
+            roundNumber: 0,
+          })
+        }
       >
         Score Round 1
       </Button>
       <Button
         mode="contained"
-        onPress={() => navigation.navigate("EmpireScoreCategoryInput", {})}
+        onPress={() =>
+          navigation.navigate("EmpireScoreCategoryInput", {
+            draftEmpireScore: initialEmpireScore,
+            roundNumber: 1,
+          })
+        }
       >
         Score Round 2
       </Button>
       <Button
         mode="contained"
-        onPress={() => navigation.navigate("EmpireScoreCategoryInput", {})}
+        onPress={() =>
+          navigation.navigate("EmpireScoreCategoryInput", {
+            draftEmpireScore: initialEmpireScore,
+            roundNumber: 2,
+          })
+        }
       >
         Score Round 3
       </Button>
       <Button
         mode="contained"
-        onPress={() => navigation.navigate("EndgameScoreCategoryInput", {})}
+        onPress={() =>
+          navigation.navigate("EndgameScoreCategoryInput", {
+            draftEndgameScore: initialEndgameScore,
+          })
+        }
       >
         Score Endgame
       </Button>

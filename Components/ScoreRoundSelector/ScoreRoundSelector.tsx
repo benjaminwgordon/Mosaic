@@ -1,17 +1,29 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import { Button, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import EmpireScoreCategoryInput from "../EmpireScoreCategoryInput/EmpireScoreCategoryInput";
-import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { RootTabParamList } from "../../App";
 import EndgameScoreCategoryInput from "../EndgameScoreCategoryInput/EndgameScoreCategoryInput";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { View } from "react-native";
 import ScoreRoundSelect from "../ScoreRoundSelect/ScoreRoundSelect";
+import { EmpireRoundScoring } from "../../types/EmpireScore";
+import { RootTabParamList } from "../../App";
+import { EndgameScoring } from "../../types/EndgameScores";
 
-const Stack = createStackNavigator();
+// exported type for the nested Stack Navigator route params
+export type RootStackParamList = {
+  RoundSelect: undefined;
+  EmpireScoreCategoryInput: {
+    draftEmpireScore: EmpireRoundScoring;
+    roundNumber: 0 | 1 | 2;
+  };
+  EndgameScoreCategoryInput: {
+    draftEndgameScore: EndgameScoring;
+  };
+};
 
-type ScoreRoundSelectorProps = BottomTabScreenProps<RootTabParamList, "rounds">;
+const Stack = createStackNavigator<RootStackParamList>();
 
 const ScoreRoundSelector = () => {
   const { colors } = useTheme();
@@ -28,7 +40,11 @@ const ScoreRoundSelector = () => {
             },
           }}
         >
-          <Stack.Screen name="RoundSelect" component={ScoreRoundSelect} />
+          <Stack.Screen
+            name="RoundSelect"
+            component={ScoreRoundSelect}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="EmpireScoreCategoryInput"
             component={EmpireScoreCategoryInput}
